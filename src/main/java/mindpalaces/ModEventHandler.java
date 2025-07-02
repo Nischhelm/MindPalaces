@@ -5,7 +5,6 @@ import mindpalaces.mindpalace.MindPalaceData;
 import mindpalaces.world.MPTeleporter;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
