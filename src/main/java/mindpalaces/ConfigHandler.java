@@ -32,6 +32,11 @@ public class ConfigHandler {
     @Config.RangeInt(min = 0)
     public static int travelDelay = 12000;
 
+    @Config.Comment("How many ticks the player is allowed to stay inside the Mind Palace. This is meant mainly as a safety switch to prevent softlocks.")
+    @Config.Name("Max Stay Ticks")
+    @Config.RangeInt(min = 1200)
+    public static int maxStayTicks = 12000;
+
     @Config.Comment("Add Dimension ids from which players are not allowed to travel to their mind palace.")
     @Config.Name("Dimension Blacklist")
     public static int[] blacklistedDimensions = {};

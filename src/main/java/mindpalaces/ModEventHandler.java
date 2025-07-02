@@ -47,16 +47,6 @@ public class ModEventHandler {
 
 		if (getSleepTimer(player) < ConfigHandler.minSleepTime) return;
 
-		ResourceLocation locMain = player.getHeldItemMainhand().getItem().getRegistryName();
-		boolean itemInMainHand = locMain != null && locMain.toString().equals(ConfigHandler.heldItem);
-
-		if(!itemInMainHand) {
-			ResourceLocation locOff = player.getHeldItemOffhand().getItem().getRegistryName();
-			boolean itemInOffhand = locOff != null && locOff.toString().equals(ConfigHandler.heldItem);
-
-			if(!itemInOffhand) return;
-		}
-
 		MindPalace mp = MindPalaceData.get().getForPlayer(player);
 
 		//Teleport back
@@ -68,6 +58,15 @@ public class ModEventHandler {
 			if(MindPalaces.getWorld(0).getWorldTime() < mp.getLastTravelTick() + ConfigHandler.travelDelay) return;
 			//Blacklisted Dimensions
 			if(Arrays.stream(ConfigHandler.blacklistedDimensions).anyMatch(dimId -> dimId == player.dimension)) return;
+
+			//Has Item in hand
+			ResourceLocation locMain = player.getHeldItemMainhand().getItem().getRegistryName();
+			boolean itemInMainHand = locMain != null && locMain.toString().equals(ConfigHandler.heldItem);
+			if(!itemInMainHand) {
+				ResourceLocation locOff = player.getHeldItemOffhand().getItem().getRegistryName();
+				boolean itemInOffhand = locOff != null && locOff.toString().equals(ConfigHandler.heldItem);
+				if(!itemInOffhand) return;
+			}
 
 			//Teleport to Mind Palace
 			player.changeDimension(MindPalaces.DIMENSION_ID, MPTeleporter.INSTANCE.setFrom(player.dimension));
@@ -97,11 +96,15 @@ public class ModEventHandler {
 		MindPalace mp = MindPalaceData.get().getForPlayer(player);
 		if(mp == null) return;
 
-		if(mp.positionIsInMindPalace(player.getPosition())) return;
-
-		Vec3d spawn = mp.getSpawnPos();
-		player.setPositionAndUpdate(spawn.x, spawn.y, spawn.z);
-		player.fallDistance = 0;
+		if(!mp.positionIsInMindPalace(player.getPosition())) {
+			Vec3d spawn = mp.getSpawnPos();
+			player.setPositionAndUpdate(spawn.x, spawn.y, spawn.z);
+			player.fallDistance = 0;
+		}
+		else if(MindPalaces.getWorld(0).getWorldTime() > mp.getLastTravelTick() + ConfigHandler.maxStayTicks) {
+			int dim = mp.getOriginalDimension();
+			player.changeDimension(dim, MPTeleporter.INSTANCE.setFrom(MindPalaces.DIMENSION_ID));
+		}
 	}
 
 	@SubscribeEvent
