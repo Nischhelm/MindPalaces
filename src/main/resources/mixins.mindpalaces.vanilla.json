@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "mindpalaces.mixin.vanilla",
+  "refmap": "mixins.mindpalaces.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "EntityPlayerAccessor"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

@@ -1,5 +1,8 @@
-package mindpalaces;
+package mindpalaces.handler;
 
+import fermiumbooter.annotations.MixinConfig;
+import mindpalaces.MindPalaces;
+import mindpalaces.mindpalace.MindPalace;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -9,6 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Config(modid = MindPalaces.MODID)
+@MixinConfig(name = MindPalaces.MODID)
 public class ConfigHandler {
     @Config.Comment("Each palace will be a cube of size x size x size air blocks surrounded by bedrock")
     @Config.Name("Palace Size")
@@ -18,8 +22,12 @@ public class ConfigHandler {
     @Config.Name("Disallow Mobs")
     public static boolean noMobsAllowed = true;
 
-    @Config.Comment("The Mind Palace dimension will try to repair all mind palace bedrock walls every this many ticks. Increase if theres performance issues.")
-    @Config.Name("Bedrock Repair Period")
+    @Config.Comment("If set to true, will stop any Explosions inside Mind Palace")
+    @Config.Name("Disallow Explosions")
+    public static boolean noExplosionsAllowed = true;
+
+    @Config.Comment("The Mind Palace dimension will try to repair all mind palace bedrock walls every this many ticks. Increase if there's performance issues.")
+    @Config.Name("Wall Repair Speed")
     public static int repairSpeed = 10;
 
     @Config.Comment("How many ticks the player has to be sleeping in a bed until they get teleported.")
@@ -34,7 +42,7 @@ public class ConfigHandler {
 
     @Config.Comment("How many ticks the player is allowed to stay inside the Mind Palace. This is meant mainly as a safety switch to prevent softlocks.")
     @Config.Name("Max Stay Ticks")
-    @Config.RangeInt(min = 1200)
+    @Config.RangeInt(min = 200)
     public static int maxStayTicks = 12000;
 
     @Config.Comment("Add Dimension ids from which players are not allowed to travel to their mind palace.")
@@ -45,10 +53,22 @@ public class ConfigHandler {
     @Config.Name("Held Item")
     public static String heldItem = "minecraft:clock";
 
+    @Config.Comment("The mind palaces walls, floor and ceiling will be made from this block. Breaking this block will not be allowed in the mind palace dimension, so do not use a block a player could manually place and want to remove again.")
+    @Config.Name("Wall Block")
+    public static String wallBlock = "minecraft:bedrock";
+
     @Config.Comment("This will prevent Recurrent Complex from generating structures in the Mind Palace Dimension.")
     @Config.Name("Compat - Disable Recurrent Complex")
     @Config.RequiresMcRestart
     public static boolean disableReccomplex = true;
+
+    @Config.Comment("Will save the original position of the player when traveling to the mind palace using waystones/warp scrolls, so players can return using their bed and will be kicked normally after 10 minutes.")
+    @Config.Name("Compat - Waystones Travel")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.mindpalaces.waystones.json", defaultValue = true)
+    @MixinConfig.CompatHandling(modid = "waystones", desired = true, reason = "Waystones compat handling needs Waystones to work")
+    @Config.RequiresMcRestart
+    @SuppressWarnings("unused")
+    public static boolean waystonesCompat = true;
 
     @Mod.EventBusSubscriber(modid = MindPalaces.MODID)
     @SuppressWarnings("unused")
@@ -56,8 +76,11 @@ public class ConfigHandler {
         @SubscribeEvent
         @SideOnly(Side.CLIENT)
         public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-            if(event.getModID().equals(MindPalaces.MODID))
+            if(event.getModID().equals(MindPalaces.MODID)) {
                 ConfigManager.sync(MindPalaces.MODID, Config.Type.INSTANCE);
+                MindPalace.wallBlock = null;
+                MPTeleporter.TeleportHandler.travelItem = null;
+            }
         }
     }
 }

@@ -1,10 +1,12 @@
 package mindpalaces.mindpalace;
 
-import mindpalaces.ConfigHandler;
 import mindpalaces.MindPalaces;
+import mindpalaces.content.PotionSleepParalysis;
+import mindpalaces.handler.ConfigHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
@@ -26,7 +28,7 @@ public class MindPalaceData extends WorldSavedData {
     }
 
     public static MindPalaceData get(){
-        World world = MindPalaces.getWorld(0);
+        World world = MindPalaces.getOverworld();
 
         MindPalaceData instance = (MindPalaceData) world.loadData(MindPalaceData.class, KEY);
 
@@ -77,6 +79,7 @@ public class MindPalaceData extends WorldSavedData {
         return compound;
     }
 
+    @Nonnull
     public MindPalace getForPlayer(EntityPlayer player){
         MindPalace mp = mindPalaces.get(player.getUniqueID());
         if(mp == null) {
@@ -96,6 +99,8 @@ public class MindPalaceData extends WorldSavedData {
         MindPalace mp = getForPlayer(player);
         mp.generateMindPalace();
         mp.setOriginalPosition(originalDimension, player.getPosition());
+        mp.setLastTravelTick(MindPalaces.getOverworld().getWorldTime());
+        player.addPotionEffect(new PotionEffect(PotionSleepParalysis.INSTANCE, ConfigHandler.maxStayTicks));
 
         return mp;
     }

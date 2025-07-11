@@ -1,6 +1,8 @@
 package mindpalaces.mindpalace;
 
 import mindpalaces.MindPalaces;
+import mindpalaces.handler.ConfigHandler;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -9,6 +11,8 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 public class MindPalace {
+
+	public static Block wallBlock = null;
 
 	private final BlockPos mindPalacePos;
 	private final int size;
@@ -101,6 +105,11 @@ public class MindPalace {
 	public void generateMindPalace() {
 		World world = MindPalaces.getMPWorld();
 
+		if(wallBlock == null){
+			wallBlock = Block.getBlockFromName(ConfigHandler.wallBlock);
+			if(wallBlock == null) wallBlock = Blocks.BEDROCK;
+		}
+
 		for(int side = 0; side <= 1; side++) { //each axis has two faces
 			int shift = 2 * side - 1; //shifting the walls one out (+1/-1)
 			//diagonal corners of each face (-- and ++)
@@ -109,8 +118,8 @@ public class MindPalace {
 			Vec3i corner2 = new Vec3i(mainAxisValue, size - 1, size - 1);
 			for (WallAxis axis : WallAxis.values())
 				for (BlockPos.MutableBlockPos blockPosMutable : BlockPos.getAllInBoxMutable(mindPalacePos.add(axis.cycle(corner1)), mindPalacePos.add(axis.cycle(corner2))))
-					if(world.getBlockState(blockPosMutable).getBlock() != Blocks.BEDROCK)
-						world.setBlockState(blockPosMutable, Blocks.BEDROCK.getDefaultState());
+					if(world.getBlockState(blockPosMutable).getBlock() != wallBlock)
+						world.setBlockState(blockPosMutable, wallBlock.getDefaultState());
 		}
 	}
 

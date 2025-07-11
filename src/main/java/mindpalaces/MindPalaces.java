@@ -1,6 +1,7 @@
 package mindpalaces;
 
 import mindpalaces.compat.ReccomplexCompat;
+import mindpalaces.handler.ConfigHandler;
 import mindpalaces.world.MPBiomeHandler;
 import mindpalaces.world.MPWorldProvider;
 import net.minecraft.world.DimensionType;
@@ -23,7 +24,7 @@ public class MindPalaces {
 
 	public static final String MODID = "mindpalaces";
 	public static final String MODNAME = "Mindpalaces";
-	public static final String MODVERSION = "1.0.0";
+	public static final String MODVERSION = "1.0.1";
 	public static final Logger LOGGER = LogManager.getLogger(MindPalaces.MODID);
 
 	public static final int DIMENSION_ID = 44;
@@ -40,6 +41,10 @@ public class MindPalaces {
 
 	public static World getWorld(int dimension){
 		return FMLCommonHandler.instance().getMinecraftServerInstance().getServer().getWorld(dimension);
+	}
+
+	public static World getOverworld(){
+		return getWorld(0);
 	}
 
 	public static World getMPWorld(){
