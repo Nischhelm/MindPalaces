@@ -18,13 +18,14 @@ import org.apache.logging.log4j.Logger;
 @Mod(
 		modid = MindPalaces.MODID,
 		name = MindPalaces.MODNAME,
-		version = MindPalaces.MODVERSION
+		version = MindPalaces.MODVERSION,
+		dependencies = "required-after:fermiumbooter@[1.3.0,)"
 )
 public class MindPalaces {
 
 	public static final String MODID = "mindpalaces";
 	public static final String MODNAME = "Mindpalaces";
-	public static final String MODVERSION = "1.0.1";
+	public static final String MODVERSION = "1.0.2";
 	public static final Logger LOGGER = LogManager.getLogger(MindPalaces.MODID);
 
 	public static final int DIMENSION_ID = 44;
