@@ -72,25 +72,16 @@ public class MPTeleporter implements ITeleporter {
             //Teleport to MP
             else {
                 //Only allow each x ticks
-                if(MindPalaces.getOverworld().getWorldTime() < mp.getLastTravelTick() + ConfigHandler.travelDelay) {
-                    event.setResult(Event.Result.DENY);
-                    return;
-                }
+                if(MindPalaces.getOverworld().getWorldTime() < mp.getLastTravelTick() + ConfigHandler.travelDelay) return;
                 //Blacklisted Dimensions
-                if(Arrays.stream(ConfigHandler.blacklistedDimensions).anyMatch(dimId -> dimId == player.dimension)) {
-                    event.setResult(Event.Result.DENY);
-                    return;
-                }
+                if(Arrays.stream(ConfigHandler.blacklistedDimensions).anyMatch(dimId -> dimId == player.dimension)) return;
 
                 //Has Item in hand
                 if(travelItem == null){
                     travelItem = Item.getByNameOrId(ConfigHandler.heldItem);
                     if(travelItem == null) travelItem = Items.CLOCK;
                 }
-                if(!player.getHeldItemMainhand().getItem().equals(travelItem) && !player.getHeldItemOffhand().getItem().equals(travelItem)) {
-                    event.setResult(Event.Result.DENY);
-                    return;
-                }
+                if(!player.getHeldItemMainhand().getItem().equals(travelItem) && !player.getHeldItemOffhand().getItem().equals(travelItem)) return;
 
                 //Teleport to Mind Palace
                 player.changeDimension(MindPalaces.DIMENSION_ID, MPTeleporter.INSTANCE.setFrom(player.dimension));
