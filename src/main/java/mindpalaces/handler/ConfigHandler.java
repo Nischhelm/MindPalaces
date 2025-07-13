@@ -33,7 +33,7 @@ public class ConfigHandler {
     @Config.Comment("How many ticks the player has to be sleeping in a bed until they get teleported.")
     @Config.Name("Min Sleep Time")
     @Config.RangeInt(max = 99)
-    public static int minSleepTime = 99;
+    public static int minSleepTime = 90;
 
     @Config.Comment("How many ticks the player cannot travel to the Mind Palace again after having traveled there last (default: one whole night, 10 minutes).")
     @Config.Name("Travel Delay")
@@ -69,6 +69,14 @@ public class ConfigHandler {
     @Config.RequiresMcRestart
     @SuppressWarnings("unused")
     public static boolean waystonesCompat = true;
+
+    @Config.Comment("Traveling to/from MP will not increase evolution points if this is enabled")
+    @Config.Name("Compat - SRP no sleep points")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.mindpalaces.srp.json", defaultValue = true)
+    @MixinConfig.CompatHandling(modid = "srparasites", desired = true, reason = "SRP compat handling needs SRP to work")
+    @Config.RequiresMcRestart
+    @SuppressWarnings("unused")
+    public static boolean srpCompat = true;
 
     @Mod.EventBusSubscriber(modid = MindPalaces.MODID)
     @SuppressWarnings("unused")

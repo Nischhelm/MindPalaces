@@ -58,6 +58,7 @@ dependencies {
     implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
     implementation fg.deobf("curse.maven:waystones-${waystones_version}")
     implementation fg.deobf("curse.maven:recurrent-complex-${reccomplex_version}")
+    implementation fg.deobf("libs:SRParasites:${srparasites_version}") // Third party distro disabled
 }
 
 mixin {

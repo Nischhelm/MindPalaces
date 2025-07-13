@@ -20,7 +20,7 @@ public class MindPalace {
 	private Vec3d spawnPos;
 	private BlockPos originPos = new BlockPos(0, 63, 0); //TODO: could make this fallback safer
 	private int originDimension = 0;
-	private long lastTravelTick = -12000;
+	private int tick = 0;
 
 	public MindPalace(BlockPos mindPalacePos, int size) {
 		this.mindPalacePos = mindPalacePos;
@@ -32,7 +32,7 @@ public class MindPalace {
 		return new MindPalace(readBlockPosFromNBT(mp.getCompoundTag("mpPos")), mp.getInteger("size"))
 				.setOriginalPosition(mp.getInteger("origDim"), readBlockPosFromNBT(mp.getCompoundTag("origPos")))
 				.setSpawnPosition(readVec3dFromNBT(mp.getCompoundTag("spawnPos")))
-				.setLastTravelTick(mp.getLong("lastTick"));
+				.setTick(mp);
 	}
 
 	public NBTTagCompound writeToNBT() {
@@ -43,7 +43,7 @@ public class MindPalace {
 		nbt.setTag("origPos", writeBlockPosToNBT(this.originPos));
 		nbt.setInteger("origDim", this.originDimension);
 		nbt.setInteger("size", this.size);
-		nbt.setLong("lastTick", this.lastTravelTick);
+		nbt.setInteger("tick", this.tick);
 
 		return nbt;
 	}
@@ -88,13 +88,31 @@ public class MindPalace {
 		return originPos;
 	}
 
-	public MindPalace setLastTravelTick(long lastTick) {
-		this.lastTravelTick = lastTick;
+	public MindPalace setTick(NBTTagCompound mp) {
+		if(mp.hasKey("lastTravelTick")) this.tick = (int) (MindPalaces.getWorld(0).getWorldTime() - mp.getInteger("lastTravelTick"));	//Legacy 1.0.3 and below
+		if(mp.hasKey("tick")) this.tick = mp.getInteger("tick"); //current
+
 		return this;
 	}
 
-	public long getLastTravelTick() {
-		return lastTravelTick;
+	public void incrementTick(){
+		this.tick += 10; //Has to match the amount of skipped ticks in MPEventHandler
+	}
+
+	public boolean isReadyToKick(){
+		if(this.tick > ConfigHandler.maxStayTicks){
+			this.tick = 0;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isReadyToEnter(){
+        return this.tick > ConfigHandler.travelDelay;
+    }
+
+	public void resetTick() {
+		this.tick = 0;
 	}
 
 	private MindPalace setSpawnPosition(Vec3d spawnPos) {
@@ -181,6 +199,10 @@ public class MindPalace {
 			return true;
 		}
 		return false;
+	}
+
+	public int getTicks() {
+		return tick;
 	}
 
 	public enum WallAxis{

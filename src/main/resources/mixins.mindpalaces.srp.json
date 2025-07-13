@@ -1,13 +1,12 @@
 {
   "required": true,
-  "package": "mindpalaces.mixin.vanilla",
+  "package": "mindpalaces.mixin.srparasites",
   "refmap": "mixins.mindpalaces.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "EntityPlayerAccessor",
-    "EntityPlayerMixin"
+    "SRPEventHandlerBusMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

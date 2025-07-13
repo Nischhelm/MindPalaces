@@ -44,10 +44,25 @@ public class MindPalaceEventHandler {
     @SubscribeEvent
     public static void regenerateBedrock(TickEvent.WorldTickEvent event){
         World world = event.world;
+        if(event.phase != TickEvent.Phase.END) return;
         if(world.provider.getDimension() != MindPalaces.DIMENSION_ID) return;
         if(world.isRemote) return;
         if(world.getTotalWorldTime() % ConfigHandler.repairSpeed != 0) return;
 
         MindPalaceData.get().getAll().forEach(MindPalace::generateMindPalace);
+    }
+
+    @SubscribeEvent
+    public static void tickMindPalace(TickEvent.PlayerTickEvent event){
+        if(event.phase != TickEvent.Phase.END) return;
+        EntityPlayer player = event.player;
+        World world = player.world;
+
+        if(world.isRemote) return;
+
+        if(world.getWorldTime() % 10 != 0) return; //enough to do it every 10 ticks
+
+        MindPalace mp = MindPalaceData.get().getForPlayer(player);
+        mp.incrementTick();
     }
 }

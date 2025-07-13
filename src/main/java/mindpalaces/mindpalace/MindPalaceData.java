@@ -48,8 +48,7 @@ public class MindPalaceData extends WorldSavedData {
     public MindPalace createMindPalace(){
         int xPos = (ConfigHandler.size + 1) * (ConfigHandler.size + 1);
         int zPos = (ConfigHandler.size + 4) * mindPalaces.size();
-        return new MindPalace(new BlockPos(xPos, 1, zPos), ConfigHandler.size)
-                .setLastTravelTick(-ConfigHandler.travelDelay);
+        return new MindPalace(new BlockPos(xPos, 1, zPos), ConfigHandler.size);
     }
 
     @Override
@@ -99,7 +98,7 @@ public class MindPalaceData extends WorldSavedData {
         MindPalace mp = getForPlayer(player);
         mp.generateMindPalace();
         mp.setOriginalPosition(originalDimension, player.getPosition());
-        mp.setLastTravelTick(MindPalaces.getOverworld().getWorldTime());
+        mp.resetTick();
         player.addPotionEffect(new PotionEffect(PotionSleepParalysis.INSTANCE, ConfigHandler.maxStayTicks));
 
         return mp;
