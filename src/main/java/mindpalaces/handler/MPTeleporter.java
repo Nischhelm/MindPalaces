@@ -48,7 +48,7 @@ public class MPTeleporter implements ITeleporter {
 
             BlockPos origPos = mindPalace.getOriginalPosition();
             //TODO: check if theres a good spot in origin dimension as well, might have been griefed
-            player.setLocationAndAngles(origPos.getX() + 0.7, origPos.getY(), origPos.getZ() + 0.7, yaw, player.rotationPitch);
+            player.setLocationAndAngles(origPos.getX() + 0.5, origPos.getY(), origPos.getZ() + 0.5, yaw, player.rotationPitch);
             player.removeActivePotionEffect(PotionSleepParalysis.INSTANCE);
         }
     }
@@ -109,7 +109,6 @@ public class MPTeleporter implements ITeleporter {
             if(player.isCreative() || player.isSpectator()) return;
 
             MindPalace mp = MindPalaceData.get().getForPlayer(player);
-            int ticks = mp.getTicks();
 
             //Relocate if outside of MP
             if(!mp.positionIsInMindPalace(player.getPosition())) {
@@ -118,7 +117,7 @@ public class MPTeleporter implements ITeleporter {
                 player.fallDistance = 0;
             }
             else if(mp.isReadyToKick()) //Kick if time's up
-                player.changeDimension(mp.getOriginalDimension(), MPTeleporter.INSTANCE.setFrom(MindPalaces.DIMENSION_ID));
+                teleportToDimension(player, mp.getOriginalDimension());
         }
     }
 }

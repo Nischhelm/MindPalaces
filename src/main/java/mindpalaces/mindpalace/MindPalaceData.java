@@ -19,6 +19,7 @@ import java.util.UUID;
 
 public class MindPalaceData extends WorldSavedData {
     private static final String KEY = "mindpalaces";
+    private static MindPalaceData clientCache = null;
 
     private final Map<UUID, MindPalace> mindPalaces = new HashMap<>();
     public static boolean isLoading = false;
@@ -29,6 +30,11 @@ public class MindPalaceData extends WorldSavedData {
 
     public static MindPalaceData get(){
         World world = MindPalaces.getOverworld();
+
+        if(world.isRemote){ //should never happen but protection against other mods
+            if(clientCache == null) clientCache = new MindPalaceData(KEY);
+            return clientCache;
+        }
 
         MindPalaceData instance = (MindPalaceData) world.loadData(MindPalaceData.class, KEY);
 

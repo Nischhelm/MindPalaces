@@ -14,8 +14,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Config(modid = MindPalaces.MODID)
 @MixinConfig(name = MindPalaces.MODID)
 public class ConfigHandler {
-    @Config.Comment("Each palace will be a cube of size x size x size air blocks surrounded by bedrock")
+    @Config.Comment("Each palace will be a cube of [size x size x size] air blocks surrounded by bedrock")
     @Config.Name("Palace Size")
+    @Config.RangeInt(min = 2, max = 254)
     public static int size = 5;
 
     @Config.Comment("If set to true, will stop any Living Entity spawn inside Mind Palace")
@@ -28,11 +29,12 @@ public class ConfigHandler {
 
     @Config.Comment("The Mind Palace dimension will try to repair all mind palace bedrock walls every this many ticks. Increase if there's performance issues.")
     @Config.Name("Wall Repair Speed")
+    @Config.RangeInt(min = 1)
     public static int repairSpeed = 10;
 
     @Config.Comment("How many ticks the player has to be sleeping in a bed until they get teleported.")
     @Config.Name("Min Sleep Time")
-    @Config.RangeInt(max = 99)
+    @Config.RangeInt(min = 0, max = 99)
     public static int minSleepTime = 90;
 
     @Config.Comment("How many ticks the player cannot travel to the Mind Palace again after having traveled there last (default: one whole night, 10 minutes).")
