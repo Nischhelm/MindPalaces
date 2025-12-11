@@ -46,6 +46,7 @@ minecraft {
 repositories {
     flatDir { dirs 'libs' }
     maven { url = 'https://www.cursemaven.com' }
+    maven { url = 'https://maven.blamejared.com' }
 }
 
 dependencies {
@@ -60,6 +61,10 @@ dependencies {
     compileOnly fg.deobf("curse.maven:waystones-${waystones_version}")
     compileOnly fg.deobf("curse.maven:recurrent-complex-${reccomplex_version}")
     compileOnly fg.deobf("libs:SRParasites:${srparasites_version}") // Third party distro disabled
+
+    compileOnly fg.deobf("CraftTweaker2:CraftTweaker2-${crafttweaker_version}")
+    compileOnly fg.deobf("CraftTweaker2:ZenScript:${zs_version}")
+    compileOnly fg.deobf("CraftTweaker2:CraftTweaker2-API:${zs_version}")
 }
 
 mixin {
