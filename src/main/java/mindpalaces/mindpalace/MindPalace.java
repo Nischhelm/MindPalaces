@@ -22,6 +22,7 @@ public class MindPalace {
 	private BlockPos originPos = null;
 	private int originDimension = 0;
 	private int tick = 0;
+	private long lastTravelWorldTick = 0;
 
 	public MindPalace(BlockPos mindPalacePos, int size) {
 		this.mindPalacePos = mindPalacePos;
@@ -45,6 +46,7 @@ public class MindPalace {
 		nbt.setInteger("origDim", this.originDimension);
 		nbt.setInteger("size", this.size);
 		nbt.setInteger("tick", this.tick);
+		nbt.setLong("lastTravelWorldTick", this.lastTravelWorldTick);
 
 		return nbt;
 	}
@@ -90,7 +92,7 @@ public class MindPalace {
 	}
 
 	public MindPalace setTick(NBTTagCompound mp) {
-		if(mp.hasKey("lastTravelTick")) this.tick = (int) (MindPalaces.getWorld(0).getWorldTime() - mp.getInteger("lastTravelTick"));	//Legacy 1.0.3 and below
+		if(mp.hasKey("lastTravelWorldTick")) this.lastTravelWorldTick = mp.getLong("lastTravelWorldTick");
 		if(mp.hasKey("tick")) this.tick = mp.getInteger("tick"); //current
 
 		return this;
@@ -108,12 +110,13 @@ public class MindPalace {
 		return false;
 	}
 
-	public boolean isReadyToEnter(){
-        return this.tick > ConfigHandler.travelDelay;
+	public boolean isReadyToEnter(long currentWorldTick){
+        return currentWorldTick > this.lastTravelWorldTick + ConfigHandler.travelDelay;
     }
 
-	public void resetTick() {
+	public void resetTick(long worldTime) {
 		this.tick = 0;
+		this.lastTravelWorldTick = worldTime;
 	}
 
 	private MindPalace setSpawnPosition(Vec3d spawnPos) {
@@ -158,14 +161,6 @@ public class MindPalace {
 
 		spawnPos = new Vec3d(SpawnFinder.findMPSpawn(world, mindPalacePos, size)).add(0.7, 0.0, 0.7);
 		return spawnPos;
-	}
-
-	private boolean setNewSpawnPos(World worldIn, BlockPos blockPos) {
-		if (SpawnFinder.isValidSpawnPos(worldIn, blockPos)) {
-			this.spawnPos = new Vec3d(blockPos).add(0.7, 0.0, 0.7); //adding 0.7 blocks to land in the center of the block (width of player hitbox is 2 x 0.2, so we have to +0.5 + 0.2)
-			return true;
-		}
-		return false;
 	}
 
 	public int getTicks() {

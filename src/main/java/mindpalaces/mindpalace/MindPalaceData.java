@@ -109,7 +109,7 @@ public class MindPalaceData extends WorldSavedData {
         MindPalace mp = getForPlayer(player);
         mp.generateMindPalace();
         mp.setOriginalPosition(originalDimension, player.getPosition());
-        mp.resetTick();
+        mp.resetTick(player.world.getWorldTime());
         player.addPotionEffect(new PotionEffect(PotionSleepParalysis.INSTANCE, ConfigHandler.maxStayTicks));
 
         return mp;

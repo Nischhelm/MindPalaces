@@ -74,7 +74,7 @@ public class MPTeleporter implements ITeleporter {
             //Teleport to MP
             else {
                 //Only allow each x ticks
-                if(!mp.isReadyToEnter(world.getTotalWorldTime())) return;
+                if(!mp.isReadyToEnter(world.getWorldTime())) return;
                 //Blacklisted Dimensions
                 if(Arrays.stream(ConfigHandler.blacklistedDimensions).anyMatch(dimId -> dimId == player.dimension)) return;
 
