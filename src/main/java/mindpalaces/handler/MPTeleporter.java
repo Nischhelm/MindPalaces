@@ -7,6 +7,7 @@ import mindpalaces.mindpalace.MindPalaceData;
 import mindpalaces.mixin.vanilla.EntityPlayerAccessor;
 import mindpalaces.util.FromMPTeleporterThreadLocal;
 import mindpalaces.util.IEntityPlayer;
+import mindpalaces.util.SpawnFinder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -46,8 +47,7 @@ public class MPTeleporter implements ITeleporter {
             //FROM MP
             MindPalace mindPalace = MindPalaceData.get().getForPlayer(player);
 
-            BlockPos origPos = mindPalace.getOriginalPosition();
-            //TODO: check if theres a good spot in origin dimension as well, might have been griefed
+            BlockPos origPos = SpawnFinder.findOriginalSpawn(player, world, mindPalace.getOriginalPosition(), mindPalace.getOriginalDimension());
             player.setLocationAndAngles(origPos.getX() + 0.5, origPos.getY(), origPos.getZ() + 0.5, yaw, player.rotationPitch);
             player.removeActivePotionEffect(PotionSleepParalysis.INSTANCE);
         }
@@ -112,6 +112,7 @@ public class MPTeleporter implements ITeleporter {
 
             //Relocate if outside of MP
             if(!mp.positionIsInMindPalace(player.getPosition())) {
+                if(player.isRiding()) player.dismountRidingEntity();
                 Vec3d spawn = mp.getSpawnPos();
                 player.setPositionAndUpdate(spawn.x, spawn.y, spawn.z);
                 player.fallDistance = 0;

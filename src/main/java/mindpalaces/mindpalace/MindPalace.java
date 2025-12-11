@@ -2,6 +2,7 @@ package mindpalaces.mindpalace;
 
 import mindpalaces.MindPalaces;
 import mindpalaces.handler.ConfigHandler;
+import mindpalaces.util.SpawnFinder;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,7 +19,7 @@ public class MindPalace {
 	private final int size;
 
 	private Vec3d spawnPos;
-	private BlockPos originPos = new BlockPos(0, 63, 0); //TODO: could make this fallback safer
+	private BlockPos originPos = null;
 	private int originDimension = 0;
 	private int tick = 0;
 
@@ -153,48 +154,14 @@ public class MindPalace {
 		World world = MindPalaces.getMPWorld();
 
 		// If we already have a valid spawn pos, don't worry about it
-		if(isValidSpawnPos(world, new BlockPos(spawnPos))) return spawnPos;
+		if(SpawnFinder.isValidSpawnPos(world, new BlockPos(spawnPos))) return spawnPos;
 
-		// First check center position
-		int center = size >> 1; //divide by 2, intended truncation for odd numbers. returns ++ corner of center 2x2 if size is even
-		BlockPos centerPos = mindPalacePos.add(center, 0, center);
-
-		for(int dy = 0; dy <= this.size - 2; dy ++) { //check for all valid heights (player is 2 blocks high)
-			for (int currSize = 1; currSize <= this.size; currSize++) { //go through the possible sizes in shells of L shape
-				int sign = (currSize % 2 == 0) ? -1 : 1; //even: -1, odd: +1
-
-				// create corner first but don't check it yet
-				int corner = sign * currSize / 2;
-				BlockPos cornerPos = centerPos.add(corner, dy, corner);
-
-				// check from each end of the L towards the corner
-				if(currSize > 1) //special case is currSize = 1 where we only check one block, the corner
-					for (int shift = currSize - 1; shift >= 0; shift--) {
-						BlockPos checkPosX = cornerPos.add(-sign * shift, 0, 0);
-						if (setNewSpawnPos(world, checkPosX)) return this.spawnPos;
-
-						BlockPos checkPosZ = cornerPos.add(0, 0, -sign * shift);
-						if (setNewSpawnPos(world, checkPosZ)) return this.spawnPos;
-					}
-
-				// last check the corner of the L shape
-				if (setNewSpawnPos(world, cornerPos)) return this.spawnPos;
-			}
-		}
-
-		//if everything fails, just spawn at the center inside a block
-		return new Vec3d(centerPos).add(0.7, 0.0, 0.7);
-	}
-
-	//Copied from fonnymonkey's BedBreakBegone
-	private boolean isValidSpawnPos(World worldIn, BlockPos blockPos) {
-		return worldIn.getBlockState(blockPos.down()).getMaterial().isSolid() &&
-				worldIn.getBlockState(blockPos).getBlock().canSpawnInBlock() &&
-				worldIn.getBlockState(blockPos.up()).getBlock().canSpawnInBlock();
+		spawnPos = new Vec3d(SpawnFinder.findMPSpawn(world, mindPalacePos, size)).add(0.7, 0.0, 0.7);
+		return spawnPos;
 	}
 
 	private boolean setNewSpawnPos(World worldIn, BlockPos blockPos) {
-		if (isValidSpawnPos(worldIn, blockPos)) {
+		if (SpawnFinder.isValidSpawnPos(worldIn, blockPos)) {
 			this.spawnPos = new Vec3d(blockPos).add(0.7, 0.0, 0.7); //adding 0.7 blocks to land in the center of the block (width of player hitbox is 2 x 0.2, so we have to +0.5 + 0.2)
 			return true;
 		}
