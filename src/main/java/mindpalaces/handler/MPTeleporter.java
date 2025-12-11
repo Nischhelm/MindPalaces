@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -73,7 +74,7 @@ public class MPTeleporter implements ITeleporter {
             //Teleport to MP
             else {
                 //Only allow each x ticks
-                if(!mp.isReadyToEnter()) return;
+                if(!mp.isReadyToEnter(world.getTotalWorldTime())) return;
                 //Blacklisted Dimensions
                 if(Arrays.stream(ConfigHandler.blacklistedDimensions).anyMatch(dimId -> dimId == player.dimension)) return;
 
@@ -109,6 +110,8 @@ public class MPTeleporter implements ITeleporter {
             if(player.isCreative() || player.isSpectator()) return;
 
             MindPalace mp = MindPalaceData.get().getForPlayer(player);
+            if(player.world.getTotalWorldTime() % 70 == 7)
+                player.addPotionEffect(new PotionEffect(PotionSleepParalysis.INSTANCE, ConfigHandler.maxStayTicks - mp.getTicks(), 0));
 
             //Relocate if outside of MP
             if(!mp.positionIsInMindPalace(player.getPosition())) {
