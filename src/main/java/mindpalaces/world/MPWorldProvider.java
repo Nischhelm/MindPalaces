@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
@@ -111,6 +112,11 @@ public class MPWorldProvider extends WorldProvider {
 	@Override
 	public boolean canRespawnHere() {
 		return false;
+	}
+
+	@Override
+	public int getRespawnDimension(EntityPlayerMP player){
+		return 0;
 	}
 
 	@Override
