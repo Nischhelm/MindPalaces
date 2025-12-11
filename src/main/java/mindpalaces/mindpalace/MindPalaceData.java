@@ -61,12 +61,17 @@ public class MindPalaceData extends WorldSavedData {
     public void readFromNBT(NBTTagCompound nbt) {
         isLoading = true;
         if(!nbt.hasKey("list")) return;
-        nbt.getTagList("list", 10).forEach( tags ->
-                mindPalaces.put(
-                        UUID.fromString(((NBTTagCompound) tags).getString("uuid")),
-                        MindPalace.createFromNBT(((NBTTagCompound) tags).getCompoundTag("mp"))
-                )
-        );
+        try {
+            nbt.getTagList("list", 10).forEach(tags ->
+                    mindPalaces.put(
+                            UUID.fromString(((NBTTagCompound) tags).getString("uuid")),
+                            MindPalace.createFromNBT(((NBTTagCompound) tags).getCompoundTag("mp"))
+                    )
+            );
+        } catch (Exception e){
+            MindPalaces.LOGGER.info("Crashed while trying to read Mind Palace data - some might be corrupted");
+            e.printStackTrace(System.out);
+        }
         isLoading = false;
     }
 
