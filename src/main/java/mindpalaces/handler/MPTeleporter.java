@@ -95,11 +95,9 @@ public class MPTeleporter implements ITeleporter {
             event.setResult(Event.Result.DENY);
         }
 
+        // Main method to teleport players to/from Mind Palace
         public static void teleportToDimension(EntityPlayer player, int targetDimension){
-            if(targetDimension == MindPalaces.DIMENSION_ID)
-                player.changeDimension(MindPalaces.DIMENSION_ID, MPTeleporter.INSTANCE.setFrom(player.dimension));
-            else
-                player.changeDimension(targetDimension, MPTeleporter.INSTANCE.setFrom(MindPalaces.DIMENSION_ID));
+            player.changeDimension(targetDimension, MPTeleporter.INSTANCE.setFrom(player.dimension));
         }
 
         @SubscribeEvent
