@@ -21,7 +21,7 @@ public class MPBiomeHandler {
 	public static final CustomBiome mindPalaceBiome = new CustomBiome();
 
 	public static void init() {
-		BiomeManager.addBiome(BiomeType.COOL, new BiomeEntry(mindPalaceBiome, 10));
+		BiomeManager.addBiome(BiomeType.COOL, new BiomeEntry(mindPalaceBiome, 0));
 		BiomeManager.addSpawnBiome(mindPalaceBiome);
 		BiomeDictionary.addTypes(mindPalaceBiome, BiomeDictionary.Type.VOID);
 	}
