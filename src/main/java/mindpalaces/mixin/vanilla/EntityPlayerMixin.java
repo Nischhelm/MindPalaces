@@ -36,7 +36,7 @@ public abstract class EntityPlayerMixin implements IEntityPlayer {
             sleepTimer = 0;
             MPTeleporter.TeleportHandler.teleportToDimension(player, mp$targetDimension);
             mp$playerShouldTP = false;
-            FromMPTeleporterThreadLocal.set(false);
+            FromMPTeleporterThreadLocal.remove();
         }
     }
 }
