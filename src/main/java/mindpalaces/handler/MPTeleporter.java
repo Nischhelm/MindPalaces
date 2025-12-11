@@ -60,6 +60,8 @@ public class MPTeleporter implements ITeleporter {
 
         @SubscribeEvent
         public static void teleportOnPlayerSleep(SleepingTimeCheckEvent event) {
+            if(ConfigHandler.heldItem.isEmpty()) return;
+
             //event is serverside only
             EntityPlayer player = event.getEntityPlayer();
             World world = player.getEntityWorld();

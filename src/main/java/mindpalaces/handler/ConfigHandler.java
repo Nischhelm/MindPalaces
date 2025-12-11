@@ -51,7 +51,7 @@ public class ConfigHandler {
     @Config.Name("Dimension Blacklist")
     public static int[] blacklistedDimensions = {};
 
-    @Config.Comment("Players will only teleport to their Mind Palace when going to sleep if they hold this item in main- or offhand.")
+    @Config.Comment("Players will only teleport to their Mind Palace when going to sleep if they hold this item in main- or offhand. To disable teleporting via sleep entirely, clear this value.")
     @Config.Name("Held Item")
     public static String heldItem = "minecraft:clock";
 
