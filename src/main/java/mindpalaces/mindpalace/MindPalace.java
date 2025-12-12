@@ -111,7 +111,7 @@ public class MindPalace {
 	}
 
 	public boolean isReadyToEnter(long currentWorldTick){
-        return currentWorldTick > this.lastTravelWorldTick + ConfigHandler.travelDelay;
+        return ConfigHandler.travelDelay < 0 || currentWorldTick > this.lastTravelWorldTick + ConfigHandler.travelDelay;
     }
 
 	public void resetTick(long worldTime) {

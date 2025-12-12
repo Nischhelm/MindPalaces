@@ -37,9 +37,9 @@ public class ConfigHandler {
     @Config.RangeInt(min = 0, max = 99)
     public static int minSleepTime = 90;
 
-    @Config.Comment("How many ticks the player cannot travel to the Mind Palace again after having traveled there last (default: one whole night, 10 minutes).")
+    @Config.Comment("How many ticks the player cannot travel to the Mind Palace again after having traveled there last (default: one whole night, 10 minutes). Set to -1 to disable and always allow entering.")
     @Config.Name("Travel Delay")
-    @Config.RangeInt(min = 0)
+    @Config.RangeInt(min = -1)
     public static int travelDelay = 12000;
 
     @Config.Comment("How many ticks the player is allowed to stay inside the Mind Palace. This is meant mainly as a safety switch to prevent softlocks. Set to -1 to disable fully (use crafttweaker compat to add your own safety exit).")
