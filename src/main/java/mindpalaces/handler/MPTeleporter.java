@@ -110,7 +110,7 @@ public class MPTeleporter implements ITeleporter {
             if(player.isCreative() || player.isSpectator()) return;
 
             MindPalace mp = MindPalaceData.get().getForPlayer(player);
-            if(player.world.getTotalWorldTime() % 70 == 7)
+            if(ConfigHandler.maxStayTicks > 0 && player.world.getTotalWorldTime() % 70 == 7)
                 player.addPotionEffect(new PotionEffect(PotionSleepParalysis.INSTANCE, ConfigHandler.maxStayTicks - mp.getTicks(), 0));
 
             //Relocate if outside of MP

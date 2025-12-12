@@ -55,6 +55,7 @@ public class MindPalaceEventHandler {
     @SubscribeEvent
     public static void tickMindPalace(TickEvent.PlayerTickEvent event){
         if(event.phase != TickEvent.Phase.END) return;
+        if(ConfigHandler.maxStayTicks < 0) return;
         EntityPlayer player = event.player;
         World world = player.world;
 
