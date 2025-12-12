@@ -65,7 +65,7 @@ public class SpawnFinder {
         //if everything fails, spawn at bed spawn location
         BlockPos bedLoc = player.getBedLocation(dimension);
         if(bedLoc != null) {
-            BlockPos bedSpawn = EntityPlayer.getBedSpawnLocation(world, bedLoc, false);
+            BlockPos bedSpawn = EntityPlayer.getBedSpawnLocation(world, bedLoc, true);
             if (bedSpawn != null) return bedSpawn;
         }
 
