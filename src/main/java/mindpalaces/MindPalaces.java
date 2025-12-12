@@ -25,7 +25,7 @@ public class MindPalaces {
 
 	public static final String MODID = "mindpalaces";
 	public static final String MODNAME = "Mindpalaces";
-	public static final String MODVERSION = "1.0.4";
+	public static final String MODVERSION = "1.1.0";
 	public static final Logger LOGGER = LogManager.getLogger(MindPalaces.MODID);
 
 	public static final int DIMENSION_ID = 44;
