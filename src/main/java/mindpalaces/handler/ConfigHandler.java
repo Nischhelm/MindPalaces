@@ -42,9 +42,9 @@ public class ConfigHandler {
     @Config.RangeInt(min = 0)
     public static int travelDelay = 12000;
 
-    @Config.Comment("How many ticks the player is allowed to stay inside the Mind Palace. This is meant mainly as a safety switch to prevent softlocks.")
+    @Config.Comment("How many ticks the player is allowed to stay inside the Mind Palace. This is meant mainly as a safety switch to prevent softlocks. Set to -1 to disable fully (use crafttweaker compat to add your own safety exit).")
     @Config.Name("Max Stay Ticks")
-    @Config.RangeInt(min = 200)
+    @Config.RangeInt(min = -1)
     public static int maxStayTicks = 12000;
 
     @Config.Comment("Add Dimension ids from which players are not allowed to travel to their mind palace.")

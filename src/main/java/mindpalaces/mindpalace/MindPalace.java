@@ -103,7 +103,7 @@ public class MindPalace {
 	}
 
 	public boolean isReadyToKick(){
-		if(this.tick > ConfigHandler.maxStayTicks){
+		if(ConfigHandler.maxStayTicks >= 0 && this.tick > ConfigHandler.maxStayTicks){
 			this.tick = 0;
 			return true;
 		}
