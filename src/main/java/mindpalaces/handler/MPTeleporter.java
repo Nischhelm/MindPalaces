@@ -115,13 +115,13 @@ public class MPTeleporter implements ITeleporter {
 
             //Relocate if outside of MP
             if(!mp.positionIsInMindPalace(player.getPosition())) {
-                if(player.isRiding()) player.dismountRidingEntity();
+                if(ConfigHandler.noMountAllowed && player.isRiding()) player.dismountRidingEntity();
                 Vec3d spawn = mp.getSpawnPos();
                 player.setPositionAndUpdate(spawn.x, spawn.y, spawn.z);
                 player.fallDistance = 0;
             }
             else if(mp.isReadyToKick() && !player.isPlayerSleeping()) { //Kick if time's up and not already in bed
-                if(player.isRiding()) player.dismountRidingEntity();
+                if(ConfigHandler.noMountAllowed && player.isRiding()) player.dismountRidingEntity();
                 mp.resetTick(player.world.getWorldTime());
                 teleportToDimension(player, mp.getOriginalDimension());
             }

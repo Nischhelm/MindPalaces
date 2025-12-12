@@ -27,6 +27,10 @@ public class ConfigHandler {
     @Config.Name("Disallow Explosions")
     public static boolean noExplosionsAllowed = true;
 
+    @Config.Comment("If set to true, will force players to dismouunt (from Boats etc) inside Mind Palace when being kicked or relocated.")
+    @Config.Name("Disallow Mounted State")
+    public static boolean noMountAllowed = true;
+
     @Config.Comment("The Mind Palace dimension will try to repair all mind palace bedrock walls every this many ticks. Increase if there's performance issues.")
     @Config.Name("Wall Repair Speed")
     @Config.RangeInt(min = 1)
