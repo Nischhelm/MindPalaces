@@ -120,8 +120,11 @@ public class MPTeleporter implements ITeleporter {
                 player.setPositionAndUpdate(spawn.x, spawn.y, spawn.z);
                 player.fallDistance = 0;
             }
-            else if(mp.isReadyToKick()) //Kick if time's up
+            else if(mp.isReadyToKick() && !player.isPlayerSleeping()) { //Kick if time's up and not already in bed
+                if(player.isRiding()) player.dismountRidingEntity();
+                mp.resetTick(player.world.getWorldTime());
                 teleportToDimension(player, mp.getOriginalDimension());
+            }
         }
     }
 }

@@ -103,12 +103,8 @@ public class MindPalace {
 	}
 
 	public boolean isReadyToKick(){
-		if(ConfigHandler.maxStayTicks >= 0 && this.tick > ConfigHandler.maxStayTicks){
-			this.tick = 0;
-			return true;
-		}
-		return false;
-	}
+        return ConfigHandler.maxStayTicks >= 0 && this.tick > ConfigHandler.maxStayTicks;
+    }
 
 	public boolean isReadyToEnter(long currentWorldTick){
         return ConfigHandler.travelDelay < 0 || currentWorldTick > this.lastTravelWorldTick + ConfigHandler.travelDelay;
