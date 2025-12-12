@@ -2,7 +2,6 @@ package mindpalaces.mixin.srparasites;
 
 import com.dhanantry.scapeandrunparasites.util.handlers.SRPEventHandlerBus;
 import com.dhanantry.scapeandrunparasites.world.SRPSaveData;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import mindpalaces.util.FromMPTeleporterThreadLocal;

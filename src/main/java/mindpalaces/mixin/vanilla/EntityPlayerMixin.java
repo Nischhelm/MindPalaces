@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(EntityPlayer.class)
 public abstract class EntityPlayerMixin implements IEntityPlayer {
     @Shadow private int sleepTimer;
-    @Shadow public abstract String getName();
 
     @Unique private boolean mp$playerShouldTP = false;
     @Unique private int mp$targetDimension = 0;

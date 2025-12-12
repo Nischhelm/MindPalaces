@@ -153,10 +153,10 @@ public class MindPalace {
 		World world = MindPalaces.getMPWorld();
 
 		// If we already have a valid spawn pos, don't worry about it
-		if(SpawnFinder.isValidSpawnPos(world, new BlockPos(spawnPos))) return spawnPos;
+		if(SpawnFinder.isValidSpawnPos(world, new BlockPos(this.spawnPos))) return this.spawnPos;
 
-		spawnPos = new Vec3d(SpawnFinder.findMPSpawn(world, mindPalacePos, size)).add(0.7, 0.0, 0.7);
-		return spawnPos;
+		this.spawnPos = new Vec3d(SpawnFinder.findMPSpawn(world, this.mindPalacePos.add(this.size / 2, 0 , this.size / 2), this.size)).add(0.7, 0.0, 0.7);
+		return this.spawnPos;
 	}
 
 	public int getTicks() {
