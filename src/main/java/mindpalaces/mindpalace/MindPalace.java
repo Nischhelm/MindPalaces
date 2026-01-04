@@ -42,11 +42,13 @@ public class MindPalace {
 
 		nbt.setTag("mpPos", writeBlockPosToNBT(this.mindPalacePos));
 		nbt.setTag("spawnPos", writeVec3dToNBT(this.spawnPos));
-		nbt.setTag("origPos", writeBlockPosToNBT(this.originPos));
-		nbt.setInteger("origDim", this.originDimension);
 		nbt.setInteger("size", this.size);
-		nbt.setInteger("tick", this.tick);
-		nbt.setLong("lastTravelWorldTick", this.lastTravelWorldTick);
+		if(this.originPos != null) { //if player never visited MP, this is still null
+			nbt.setTag("origPos", writeBlockPosToNBT(this.originPos));
+			nbt.setInteger("origDim", this.originDimension);
+			nbt.setLong("lastTravelWorldTick", this.lastTravelWorldTick);
+			nbt.setInteger("tick", this.tick);
+		}
 
 		return nbt;
 	}
