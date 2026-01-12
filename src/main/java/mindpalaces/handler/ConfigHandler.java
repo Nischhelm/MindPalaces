@@ -51,6 +51,10 @@ public class ConfigHandler {
     @Config.RangeInt(min = -1)
     public static int maxStayTicks = 12000;
 
+    @Config.Comment("For small multiplayer groups, this can be used so all players share the same mind palace. Suggested to increase size of MP to 7 or 9.")
+    @Config.Name("Mind Palace is shared")
+    public static boolean mpIsShared = false;
+
     @Config.Comment("Add Dimension ids from which players are not allowed to travel to their mind palace.")
     @Config.Name("Dimension Blacklist")
     public static int[] blacklistedDimensions = {};

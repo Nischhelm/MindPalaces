@@ -53,7 +53,7 @@ public class MindPalaceData extends WorldSavedData {
 
     public MindPalace createMindPalace(){
         int xPos = (ConfigHandler.size + 1) * (ConfigHandler.size + 1);
-        int zPos = (ConfigHandler.size + 4) * mindPalaces.size();
+        int zPos = (ConfigHandler.size + 4) * (ConfigHandler.mpIsShared ? 1 : mindPalaces.size());
         return new MindPalace(new BlockPos(xPos, 1, zPos), ConfigHandler.size);
     }
 
