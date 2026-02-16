@@ -94,6 +94,7 @@ public class MindPalaceData extends WorldSavedData {
         MindPalace mp = mindPalaces.get(player.getUniqueID());
         if(mp == null) {
             mp = this.createMindPalace();
+            MindPalaces.LOGGER.info("Creating Mind Palace #{} for {} with uuid {}", mindPalaces.size(), player.getName(), player.getUniqueID().toString());
             this.setMindPalace(player, mp);
         }
         return mp;
