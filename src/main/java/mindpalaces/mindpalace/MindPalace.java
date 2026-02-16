@@ -30,24 +30,36 @@ public class MindPalace {
 		this.spawnPos = new Vec3d(this.mindPalacePos.add(this.size / 2, 0 , this.size / 2)).add(0.7, 0, 0.7);
 	}
 
-	public static MindPalace createFromNBT(NBTTagCompound mp) {
-		return new MindPalace(readBlockPosFromNBT(mp.getCompoundTag("mpPos")), mp.getInteger("size"))
-				.setOriginalPosition(mp.getInteger("origDim"), readBlockPosFromNBT(mp.getCompoundTag("origPos")))
-				.setSpawnPosition(readVec3dFromNBT(mp.getCompoundTag("spawnPos")))
-				.setTick(mp);
+	public static MindPalace createFromNBT(NBTTagCompound tags) {
+		MindPalace newMP = new MindPalace(readBlockPosFromNBT(tags.getCompoundTag("mpPos")), tags.getInteger("size"));
+		if(tags.hasKey("originPos") && tags.hasKey("origDim"))
+			newMP.setOriginalPosition(tags.getInteger("origDim"), readBlockPosFromNBT(tags.getCompoundTag("origPos")));
+		if(tags.hasKey("spawnPos"))
+			newMP.setSpawnPosition(readVec3dFromNBT(tags.getCompoundTag("spawnPos")));
+		return newMP.setTick(tags);
 	}
 
 	public NBTTagCompound writeToNBT() {
 		NBTTagCompound nbt = new NBTTagCompound();
 
-		nbt.setTag("mpPos", writeBlockPosToNBT(this.mindPalacePos));
-		nbt.setTag("spawnPos", writeVec3dToNBT(this.spawnPos));
-		nbt.setInteger("size", this.size);
-		if(this.originPos != null) { //if player never visited MP, this is still null
-			nbt.setTag("origPos", writeBlockPosToNBT(this.originPos));
-			nbt.setInteger("origDim", this.originDimension);
-			nbt.setLong("lastTravelWorldTick", this.lastTravelWorldTick);
-			nbt.setInteger("tick", this.tick);
+		try {
+			nbt.setInteger("size", this.size);
+			if(this.mindPalacePos != null)
+				nbt.setTag("mpPos", writeBlockPosToNBT(this.mindPalacePos));
+			else {
+				MindPalaces.LOGGER.error("Error while writing MP to NBT! MP didn't have a position, this should really not happen.");
+
+			}
+			if(this.spawnPos != null)
+				nbt.setTag("spawnPos", writeVec3dToNBT(this.spawnPos));
+			if (this.originPos != null) { //if player never visited MP, this is still null
+				nbt.setTag("origPos", writeBlockPosToNBT(this.originPos));
+				nbt.setInteger("origDim", this.originDimension);
+				nbt.setLong("lastTravelWorldTick", this.lastTravelWorldTick);
+				nbt.setInteger("tick", this.tick);
+			}
+		} catch (Exception e) {
+			MindPalaces.LOGGER.error("Error while writing MP to NBT!", e);
 		}
 
 		return nbt;
